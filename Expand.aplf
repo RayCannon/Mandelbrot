@@ -1,13 +1,13 @@
- Expand←{ ⍝ Expand ⍵ centered around point ⍺
-     exp←{ ⍝ expand data along last axis and rotate
+ Expand←{              ⍝ Expand ⍵ centered around point ⍺
+     exp←{             ⍝ expand data along last axis and rotate
          ⍉(⊃,/((1+⎕IO)⊃⍴⍵)⍴⊂⍺)\⍵
      }
- ⍝    oddeven←1 0   ⍝ even items are 0
-     oddeven←0 1   ⍝ odd items are 0
+ ⍝    oddeven←1 0      ⍝ even items are 0
+     oddeven←0 1       ⍝ odd items are 0
      s←⍴⍵
-     ns←⌈0.25×s      ⍝ size of data to be expanded
+     ns←⌈0.25×s        ⍝ size of data to be expanded
      b←↑⌽⊖(ns+⍺)↑⍵
      c←oddeven exp b   ⍝ expand cols
      e←oddeven exp c   ⍝ expand rows
-     ⌽⊖s↑e            ⍝ "trim" result to size
+     ⌽⊖s↑e             ⍝ "trim" result to size
  }

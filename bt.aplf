@@ -1,5 +1,5 @@
  r←lastmat bt arg;cmat;yx;drawn;xpos;ypos;h;w;cols;done;vec;bomats;exp;maxit;re_curse_it;lastm;yyp;xxp;p;vecs;pairs;around;p1;p2;nn;next;vecs0;vecs1;vecs2;vecs3;vecs5;vecs6;vecs7;vecs8;CheckIt;check
-⍝ Boundary Trace:- Only calculate points on either side of a boundary.
+⍝ Boundary Trace:- Only calculate points on either side of a boundary
  cmat drawn xpos ypos←arg
 ⍝ cmat ←→ Colour matrix
 ⍝ drawn ←→ boolean, which pixels have been "drawn"
@@ -30,11 +30,7 @@
      ~∨/todo:⍵                     ⍝ None to do so Finished
      lastm[y;x]←((h w)⍴100×⍵+4)    ⍝ show paint drying
      res←⎕EX'bmout'                ⍝ prevent flashing of gui
-⍝ If more than "nn" only calculate "these" pixels as they are on boundary
-  ⍝   these←done{
-⍝         nn<⍴⍵:⍵                   ⍝ if ⍴⍵ less than "nn" also calculate some adjcent pixels
-⍝         ⍺{(~⍺[⍵])/⍵},⍵∘.+around
-⍝     }(todo∧exp)/vec
+
      these←(todo∧exp)/vec
      cols←⍵
      cols[these]←maxit ManCalcColor(yyp[these])(xxp[these])

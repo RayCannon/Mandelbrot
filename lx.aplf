@@ -1,5 +1,5 @@
  lx;⎕IO;xmax;iy;ymax;drawn;cmat;x;ixmax;iymax;y;around;x0;x1;y0;y1;drawnaround;bm;bmout;dotnet;cmatb;range;pos;mat;start;end;cp;rr;ir;xpix;pixs;top;left;center;right;middle;bottom;tl;tr;br;bl;nrange;n;bmat;m;bit;tie;size;data;bmname;gbits2;gbits;newcp;res;zero;irfactor;numcalc;lastmat;mousemsg;newmat;LowHi;posXs;posYs;half;colsrows;pixsh;n1;ys;xs;symmetrical;CalcMid;pixsq;sbo;f;xx;yy;gridspace;ind;calcs;st;ix;ind1;calcs1;calcs2;list;last;ij;spacing;where;flag;py;a;b;grid;ur;cmap;czero;bailout
-⍝ Mandelbrot for Dyalog
+⍝ Mandelbrot for Dyalog APL
 ⍝ Mandelbrot is semetercial around the real axis
 ⍝ Due to "landscape orientation of PocketPC´s screen,
 ⍝ Image drawn rotated thru 90 degrees

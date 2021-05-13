@@ -1,5 +1,5 @@
  n DrawGrid max;x;y
- ⍝ Draw a dotted grid
+⍝ Draw a dotted grid
  grid←{
      lastmat[⍺⍺×⍳⍺;⍵⍵×⍳⍵]←(⍺,⍵)⍴bailout ManCalcColor(⍵/posYs[⍺⍺×⍳⍺])((⍺×⍵)⍴posXs[⍵⍵×⍳⍵])
  }

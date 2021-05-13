@@ -1,5 +1,5 @@
  cmat←Normalise cmat;offset
-⍝ Normalise the offsets used by the mandelbrot body   ⍝
+⍝ Normalise the offsets used by the mandelbrot body
 ⍝ Black hole remain at 0
 ⍝ body  to be in range 9-249
  cmat⌈←0            ⍝ Convert all uncalculated to 0

@@ -11,4 +11,4 @@
      row←fp[;col]/vec
      r[row;col]←last[row]
      last←r[;col]
- :End   ⍝
+ :End

@@ -1,5 +1,5 @@
  Cycle cmap;sub;j;res;ccmap
- ⍝ Cycle cmap colours
+⍝ Cycle cmap colours
  :Trap 0
      ccmap←cmap
      sub←9+⍳240

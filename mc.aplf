@@ -1,5 +1,5 @@
  r←r mc awpq;a;w;p;q;bo;ind;list;v;b1;id
- ⍝ mandelbrot calculation
+ ⍝ mandelbrot calculation <
  a w p q list bo←awpq
  b1←test≠0
  id←b1/list

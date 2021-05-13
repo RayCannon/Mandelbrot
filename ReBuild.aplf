@@ -1,5 +1,5 @@
  list←ReBuild list;last;diff;i;this;off
- ⍝ Build up the list of each pixel positions   ⍝
+ ⍝ Build up the list of each pixel positions
  ⍝ list contains a set of "pre-zoom" positions
  last←0
  diff←⍳0

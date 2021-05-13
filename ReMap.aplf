@@ -4,7 +4,7 @@
  offset←28                  ⍝vertical offset (to take account of menubar?)
  rows cols←pixs
  extend←{(⍺,(⍴⍺)⍴0)[⍵]}
-⍝ x←cols{mid←⌈⍺÷2 ⋄ ⍵∊¯2 ¯1 0 1 2+mid:mid ⋄ ⍵}a[4]
+⍝x←cols{mid←⌈⍺÷2 ⋄ ⍵∊¯2 ¯1 0 1 2+mid:mid ⋄ ⍵}a[4]
  x←{⍵∊478+⍳4:480
      ⍵}a[4]
  y←a[3]+offset

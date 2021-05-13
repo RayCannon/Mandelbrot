@@ -1,6 +1,6 @@
  vecs←h BuildVecs w;bomats;p;BuildMats
  BuildMats←{
-⍝  Build 9 boolean matricies⍝
+⍝  Build 9 boolean matricies
 ⍝  0 1 2
 ⍝  3 4 5
 ⍝  6 7 8
