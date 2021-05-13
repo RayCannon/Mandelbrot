@@ -1,0 +1,38 @@
+ list←ReBuild list;last;diff;i;this;off
+ ⍝ Build up the list of each pixel positions   ⍝
+ ⍝ list contains a set of "pre-zoom" positions
+ last←0
+ diff←⍳0
+ ⍝ fill the gaps between pre-zoom positions
+ :For i :In ⍳⍴list
+     this←list[i]
+     :If (this≠0)∧last=0 ⋄ last←this ⋄ :End
+     :If (this≠0)∧(last≠0)∧this≠last
+         diff,←this-last
+         list[i-1]←last+(this-last)÷2
+         last←this
+     :End
+ :End
+ ⍝ Calculate the "average" gap
+ off←(+/diff)÷2×⍴diff
+ last←0
+ ⍝ Fill missing pixels from "pre-zoom" to end
+ :For i :In ⍳⍴list
+     this←list[i]
+     :If (this=0)∧last≠0
+         list[i]←last+off
+         last←list[i]
+     :Else
+         last←this
+     :End
+ :End
+ ⍝ Fill missing pixels from "pre-zoom" to beginning
+ :For i :In ⌽⍳⍴list
+     this←list[i]
+     :If (this=0)∧last≠0
+         list[i]←last-off
+         last←list[i]
+     :Else
+         last←this
+     :End
+ :End

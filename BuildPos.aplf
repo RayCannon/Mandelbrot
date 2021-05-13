@@ -1,0 +1,4 @@
+ r←pixels BuildPos minmax;min;max
+⍝ Build a set of real positions for each pixel from min to max ⍝
+ min max←minmax
+ r←min+((⍳pixels)÷pixels)×max-min

@@ -1,0 +1,10 @@
+ n DrawGrid max;x;y
+ ⍝ Draw a dotted grid
+ grid←{
+     lastmat[⍺⍺×⍳⍺;⍵⍵×⍳⍵]←(⍺,⍵)⍴bailout ManCalcColor(⍵/posYs[⍺⍺×⍳⍺])((⍺×⍵)⍴posXs[⍵⍵×⍳⍵])
+ }
+ max÷←1 2
+ y x←⌊max÷n,2
+ y(n grid 2)x ⍝ 59(5 grid 2)60
+ y x←⌊max÷2,n
+ y(2 grid n)x ⍝148(2 grid 5)24

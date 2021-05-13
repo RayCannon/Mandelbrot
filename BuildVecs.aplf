@@ -1,0 +1,23 @@
+ vecs←h BuildVecs w;bomats;p;BuildMats
+ BuildMats←{
+⍝  Build 9 boolean matricies⍝
+⍝  0 1 2
+⍝  3 4 5
+⍝  6 7 8
+⍝ Pixel "5" has 8 neighbours
+     bomats←(1+8 ⍺ ⍵)⍴1
+     bomats[0 3 6;;⍵-0 1]←0   ⍝ drop last 2 columns
+     bomats[1 4 7;;0 ⍵]←0     ⍝ drop first and last colums
+     bomats[2 5 8;;0 1]←0     ⍝ drop first 2 column
+     bomats[0 1 2;⍺-0 1;]←0   ⍝ drop last 2 rows
+     bomats[3 4 5;0 ⍺;]←0     ⍝ drop first and last rows
+     bomats[6 7 8;0 1;]←0     ⍝ drop first 2 rows
+     bomats
+ }
+
+ bomats←(h-1)BuildMats(w-1)  ⍝ neighbouring pixels booleans
+ vecs←0⍴⍳0
+ :For p :In ⍳⊃⍴bomats
+     vecs,←⊂,bomats[p;;]      ⍝ convert into vec of vectors
+ :End
+ vecs←,¨vecs

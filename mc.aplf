@@ -1,0 +1,29 @@
+ r←r mc awpq;a;w;p;q;bo;ind;list;v;b1;id
+ ⍝ mandelbrot calculation
+ a w p q list bo←awpq
+ b1←test≠0
+ id←b1/list
+ a←a[id]
+ w←w[id]
+ p←p[id]
+ q←q[id]
+ bo←bo[id]
+ test←test[id]
+ list←⍳⍴id
+ v←r[id]
+ v←a{count+←1
+     max<count:v
+     0=count|25:v mc a w p q list bo
+     x2←⍺×⍺
+     y2←⍵×⍵
+     bo∨←test<x2+y2
+     v+←~bo
+     ind←bo/list
+     x2[ind]←0
+     y2[ind]←0
+     test[ind]←0
+     p[ind]←0
+     q[ind]←0
+     (p+x2-y2)∇(q+2×⍺×⍵)
+ }w
+ r[id]←v

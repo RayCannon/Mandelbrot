@@ -1,0 +1,14 @@
+ r←floodplane Flood cmat;row;col;last;bo;vec;list;r1;fp
+⍝ Flood fill un-calculated values
+⍝ Sweep from Left to Right
+⍝ If in flood plane, copy colour on left
+ last←cmat[;0]
+ vec←⍳⊃⍴cmat
+ list←1↓⍳⊃⌽⍴cmat
+ r←r1←cmat
+ fp←cmat=floodplane
+ :For col :In list
+     row←fp[;col]/vec
+     r[row;col]←last[row]
+     last←r[;col]
+ :End   ⍝

@@ -1,0 +1,16 @@
+ Cycle cmap;sub;j;res;ccmap
+ ⍝ Cycle cmap colours
+ :Trap 0
+     ccmap←cmap
+     sub←9+⍳240
+     :While 1
+         :For j :In 0 1 2
+             ccmap[sub;j]←¯1⌽ccmap[sub;j]
+         :End
+         'bmout'⎕WS'CMap'ccmap
+         ⎕DL 0.02
+
+     :End
+ :Else
+     res←⎕EX'bmout'
+ :End

@@ -1,0 +1,33 @@
+ r←BuildCMap;⎕IO;i;j;k;num;x
+⍝ Return a CMap "table of 256 colours"  ⍝
+ ⎕IO←0
+ r←256 3⍴255
+⍝ pre defined  standard colours used by Windows
+ r[0;]←0 0 0         ⍝ Black
+ r[1;]←128 0 0       ⍝ Dark red
+ r[2;]←0 128 0       ⍝ Dark Green
+ r[3;]←128 128 0     ⍝ Olive Green
+ r[4;]←0 0 128       ⍝ Dark Blue
+ r[5;]←128 0 128     ⍝ Dark Magenta
+ r[6;]←0 128 128     ⍝ Dark Cyan
+ r[7;]←128 128 128   ⍝ Dark Grey
+ r[8;]←192 192 192   ⍝ Light Grey
+ ⍝ 9-249 Mandelbrot colours go hete
+ r[249;]←255 0 0     ⍝ Red
+ r[250;]←0 255 0     ⍝ Green
+ r[251;]←255 255 0   ⍝ Yellow
+ r[252;]←0 0 255     ⍝ Blue
+ r[253;]←255 0 255   ⍝ Magenta
+ r[254;]←0 255 255   ⍝ Cyan
+ r[255;]←255 255 255 ⍝ White
+
+ ⍝ the remaining 240 positions will be used to colour the (non black) mandelbrot
+ num←(2×⍳121)        ⍝0 2 4 6 8....240 242
+ num,←1↓⌽num         ⍝0 2 4 6 8....240 242  240 ...8 6 4 2 0
+ num←240↑num         ⍝0 2 4 6 8....240 242  240 ...8 6 4 2
+ :For x i j k :InEach (9+⍳240)(num)(80⌽num)(160⌽num)
+     ⍝ x is the position in the color map of the 240 colours
+     r[x;0]←j
+     r[x;1]←i
+     r[x;2]←k
+ :End

@@ -1,0 +1,44 @@
+ r←lastmat bt arg;cmat;yx;drawn;xpos;ypos;h;w;cols;done;vec;bomats;exp;maxit;re_curse_it;lastm;yyp;xxp;p;vecs;pairs;around;p1;p2;nn;next;vecs0;vecs1;vecs2;vecs3;vecs5;vecs6;vecs7;vecs8;CheckIt;check
+⍝ Boundary Trace:- Only calculate points on either side of a boundary.
+ cmat drawn xpos ypos←arg
+⍝ cmat ←→ Colour matrix
+⍝ drawn ←→ boolean, which pixels have been "drawn"
+⍝ xpos/ypos ←→ position in complex plan of rows and columns
+ nn←2000                           ⍝ Hardware dependent "optimization factor"
+ lastm←100×lastmat+4
+ h w←⍴cmat                         ⍝ Hight and ⍵idth
+ around←,1 0 ¯1∘.+w 0,-w
+ cols←,cmat                        ⍝ make into a vector
+ done←,drawn
+ vec←⍳h×w                          ⍝ number of elements in vector
+ vecs0 vecs1 vecs2 vecs3 exp vecs5 vecs6 vecs7 vecs8←h BuildVecs w ⍝ 9 boolean vectors relating to adjecant pixels
+ vecs←vecs0 vecs1 vecs2 vecs3 vecs5 vecs6 vecs7 vecs8
+ yyp←ypos[,⍉(w h)⍴⍳h]              ⍝ position on y axis for index into raveled matrix
+ xxp←xpos[,(h×w)⍴⍳w]               ⍝ position on x axis for index into raveled matrix
+ yx←↓yyp,[0.5]xxp                  ⍝ y x position for index into raveled matrix
+ maxit←2000⌊⌈100×÷{(⌈/⍵)-⌊/⍵}xpos       ⍝ Maximum iterations before giving up as a black hole?
+ check←{
+     w←⍵                           ⍝ Duplicate omega so can assign into it
+     bv←~(⍵<¯9)∨(⍺=⍵)∨(⍺=0)        ⍝ index int subset of w needing changing
+     l←bv/⍳⍴⍵
+     w[l]←⍺[l]                     ⍝ set whole subse to alpha
+     w[(⍵[l]≠0)/l]←¯999            ⍝ replace part of subset by ¯999
+     w                             ⍝ Return modified omega
+ }
+ re_curse_it←{                     ⍝ Calculate each set of next boundary points recursevly
+     todo←{exp\⊃¯999=check/(vecs/¨⊂⍵),⊂¯99×exp/done}⍵×⍵>¯2
+     ~∨/todo:⍵                     ⍝ None to do so Finished
+     lastm[y;x]←((h w)⍴100×⍵+4)    ⍝ show paint drying
+     res←⎕EX'bmout'                ⍝ prevent flashing of gui
+⍝ If more than "nn" only calculate "these" pixels as they are on boundary
+  ⍝   these←done{
+⍝         nn<⍴⍵:⍵                   ⍝ if ⍴⍵ less than "nn" also calculate some adjcent pixels
+⍝         ⍺{(~⍺[⍵])/⍵},⍵∘.+around
+⍝     }(todo∧exp)/vec
+     these←(todo∧exp)/vec
+     cols←⍵
+     cols[these]←maxit ManCalcColor(yyp[these])(xxp[these])
+     done[these]←1                 ⍝ Flag these pixels as DONE
+     ∇ cols}                       ⍝ Tail end recursion
+     ⍝ Note this will loop for each entry along the longest boundary
+ r←(h w)⍴re_curse_it cols          ⍝ Calculate all pixels either side of boundaries.
