@@ -1,0 +1,14 @@
+ r←BuildOutline pixs
+ ⍝Build colour index matrix
+ ⍝ r will have "count" (colour index) values for each pixel.
+ r←pixs⍴¯2
+ ⍝ ¯2=pixel not calculated yet
+ ⍝ ¯1="Black hole" Pixel colour not resolved after max number of iterations
+ ⍝ ¯3 and ¯4 used to prefill screen edge pixels
+ ⍝ This program only calculates pixels on "boundries".
+ ⍝ A pixel must be on a boundry if it is next to a pixel of a different colour.
+ ⍝ Set up some artifical boundries to force calculations around edge of screen.
+ r[⍳⊃pixs;0,¯1+⊃⌽pixs]←((⊃pixs),2)⍴¯3 ¯3 ¯4 ¯4
+ r[0,¯1+⊃pixs;⍳⊃⌽pixs]←(2,(⊃⌽pixs))⍴¯3 ¯4
+
+ r DrawGrid←pixs                     ⍝ Pre-calculate point on grid to reduce longest boundary paths

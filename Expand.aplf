@@ -1,13 +1,19 @@
- Expand←{              ⍝ Expand ⍵ centered around point ⍺
-     exp←{             ⍝ expand data along last axis and rotate
-         ⍉(⊃,/((1+⎕IO)⊃⍴⍵)⍴⊂⍺)\⍵
-     }
- ⍝    oddeven←1 0      ⍝ even items are 0
-     oddeven←0 1       ⍝ odd items are 0
-     s←⍴⍵
-     ns←⌈0.25×s        ⍝ size of data to be expanded
-     b←↑⌽⊖(ns+⍺)↑⍵
-     c←oddeven exp b   ⍝ expand cols
-     e←oddeven exp c   ⍝ expand rows
-     ⌽⊖s↑e             ⍝ "trim" result to size
- }
+ outline←pixs Expand mat;bias;expvec;exp;same;add
+ ⍝ expand mat to full pixs size
+ bias←6                            ⍝ bias used to deal eith zeros and negitives
+ expvec←(pixs[1]⍴1 ¯1),-pixs[1]    ⍝ vector used to expand mat
+ exp←,expvec\mat+bias              ⍝ expanded mat as a vector with alternate zeros
+ exp+←(bias-2)×exp=0               ⍝ replace zeros in exp with ¯2+bias
+ exp-←6                            ⍝ remove bias
+ outline←pixs⍴exp                  ⍝ reshape
+
+⍝ ⍝
+⍝ same←mat×mat=1⊖mat
+⍝ add←1⊖pixs⍴expvec\same
+⍝ add←2+add×add≠¯2
+⍝ outline+←add
+⍝
+⍝ same←mat×mat=1⌽mat
+⍝ add←1⌽pixs⍴expvec\same
+⍝ add←2+add×add≠¯2
+⍝ outline+←add

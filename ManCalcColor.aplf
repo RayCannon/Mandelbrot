@@ -1,33 +1,33 @@
- ManCalcColor←{     ⍝ Calculate the mandelbrot value
+ ManCalcColor←{  ⍝Calculate the mandelbrot value
 ⍝ for a vector of pixels
 ⍝ global  test
 ⍝ ⍵←→Y X  position of pixel on complex plane
 ⍝ ⍺←→bail-out: max number of iriterations
-     numcalc+←1     ⍝ Keep track of number times its been called
-     p q←⍵          ⍝ split argument
-     max←⍺          ⍝ simi-global
+     numcalc+←1          ⍝ Keep track of number times its been called
+     p q←⍵               ⍝ split argument
+     max←⍺               ⍝ simi-global
      max2←7
-     count←0        ⍝ semi-global
+     count←0             ⍝ semi-global
      test←9+{0}¨p
      values←{0}¨p
      list←⍳⍴p
      bo←0
      ⎕CT←0
-     res←p{
+     res←p{              ⍝ Calculate and Return "count"
          max2<count:values mc ⍺ ⍵ p q list bo
          count+←1
          x2←⍺×⍺
          y2←⍵×⍵
          bo∨←test<x2+y2
          values+←~bo
-         ind←bo/⍳⍴p ⍝(bo)/list
+         ind←bo/⍳⍴p      ⍝(bo)/list
          x2[ind]←0
          y2[ind]←0
          test[ind]←0
          p[ind]←0
          q[ind]←0
          (p+x2-y2)∇(q+2×⍺×⍵)
-     }q             ⍝ Calculate and Return "count"
+     }q
      res[(res≥max-2)/list]←¯1
      res
  }

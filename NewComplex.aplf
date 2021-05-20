@@ -1,0 +1,16 @@
+ (nposYs nposXs)←NewComplex(posYs posXs pixs pixsh l t);dy;dx
+ ⍝ Return new positions in complex plane
+ ⍝ posXs posXs←→ former positions on complex plane
+ ⍝ pixs  ←→ number of pixels (y × x)
+ ⍝ pixsh ←→ half the number of pixels
+ ⍝ l←→ left hand pixel
+ ⍝ t←→ top pixel
+ dy←0.5×-/posYs[1 0]  ⍝ calculate new imaginary distance between pixels
+ dx←0.5×-/posXs[1 0]  ⍝ calculate new real distance between pixels
+
+ ⍝ calculate new imaginary values of pixels
+ nposYs←2/posYs[lefty+⍳pixsh[0]]   ⍝ expand
+ nposYs+←pixs[0]⍴0 dy              ⍝ add alternate offsets
+ ⍝ calculate new real values of pixels
+ nposXs←2/posXs[topx+⍳pixsh[1]]    ⍝ expand
+ nposXs+←pixs[1]⍴0 dx              ⍝ add alternate offsets

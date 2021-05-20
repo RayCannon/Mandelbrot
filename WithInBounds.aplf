@@ -1,0 +1,7 @@
+ (lefty topx)←WithInBounds(x y pixsq pixsh)
+⍝ Calculatr top left coner of new matrix ensuring the new mat is totally within mat
+⍝ y x←→ requested center
+ lefty←0⌈y-pixsq[0]        ⍝ within left boundary
+ lefty←lefty⌊pixsh[0]-1    ⍝ within right boundary
+ topx←0⌈x-pixsq[1]         ⍝ within top boundary
+ topx←topx⌊pixsh[1]-1      ⍝ within bottom boundary

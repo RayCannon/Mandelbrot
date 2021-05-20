@@ -1,6 +1,5 @@
- r←BuildCMap;⎕IO;i;j;k;num;x
-⍝ Return a CMap "table of 256 colours"
- ⎕IO←0
+ r←BuildCMap;i;j;k;num;x
+⍝Build Colour Map - Return a CMap "table of 256 colours"
  r←256 3⍴255
 ⍝ pre defined  standard colours used by Windows
  r[0;]←0 0 0         ⍝ Black

@@ -1,0 +1,7 @@
+ start←StartTimer ts
+⍝Start Time
+ start←secs ts
+ :While start≡secs ⎕TS
+ :EndWhile
+ ⍝ Dont start timer part way thru a second
+ start←secs ⎕TS

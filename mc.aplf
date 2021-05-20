@@ -1,6 +1,5 @@
- r←r mc awpq;a;w;p;q;bo;ind;list;v;b1;id
- ⍝ mandelbrot calculation <
- a w p q list bo←awpq
+ r←r mc arg;a;w;p;q;bo;ind;list;v;b1;id
+ a w p q list bo←arg
  b1←test≠0
  id←b1/list
  a←a[id]
@@ -13,7 +12,6 @@
  v←r[id]
  v←a{count+←1
      max<count:v
-     0=count|25:v mc a w p q list bo
      x2←⍺×⍺
      y2←⍵×⍵
      bo∨←test<x2+y2

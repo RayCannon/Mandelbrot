@@ -1,0 +1,13 @@
+ f←ShowGrid(cmat cmap sec newcp zoom maxit);list
+⍝Show the bitmap
+ ⎕EX'f'
+ ⎕EX'bmout'
+ 'bmout'⎕WC'Bitmap'('Bits'(Normalise cmat))('CMap'cmap)
+ list←'form'('Mandelbrot')('Size'(bmout.Size))
+ list,←('Picture'('bmout' 3))('Coord' 'pixel')
+ 'f'⎕WC list
+ 'f.mb'⎕WC'MenuBar'
+ 'f.mb.exit'⎕WC'MenuItem' 'Exit'('Event' 30 1)
+ f.onMouseDown←1
+ f.Caption←sec,' secs  Center=',newcp,'  Zoom=',zoom,' Maxint=',maxit
+ 'f'⎕WS'Visible' 1                      ⍝ display  the form

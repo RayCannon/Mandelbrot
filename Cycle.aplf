@@ -1,5 +1,4 @@
  Cycle cmap;sub;j;res;ccmap
-⍝ Cycle cmap colours
  :Trap 0
      ccmap←cmap
      sub←9+⍳240
@@ -9,7 +8,6 @@
          :End
          'bmout'⎕WS'CMap'ccmap
          ⎕DL 0.02
-
      :End
  :Else
      res←⎕EX'bmout'

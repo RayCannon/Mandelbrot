@@ -1,120 +1,96 @@
- lx;⎕IO;xmax;iy;ymax;drawn;cmat;x;ixmax;iymax;y;around;x0;x1;y0;y1;drawnaround;bm;bmout;dotnet;cmatb;range;pos;mat;start;end;cp;rr;ir;xpix;pixs;top;left;center;right;middle;bottom;tl;tr;br;bl;nrange;n;bmat;m;bit;tie;size;data;bmname;gbits2;gbits;newcp;res;zero;irfactor;numcalc;lastmat;mousemsg;newmat;LowHi;posXs;posYs;half;colsrows;pixsh;n1;ys;xs;symmetrical;CalcMid;pixsq;sbo;f;xx;yy;gridspace;ind;calcs;st;ix;ind1;calcs1;calcs2;list;last;ij;spacing;where;flag;py;a;b;grid;ur;cmap;czero;bailout
-⍝ Mandelbrot for Dyalog APL
+ lx;⎕IO;iy;drawn;cmat;x;y;around;x0;x1;y0;y1;drawnaround;bm;bmout;dotnet;cmatb;range;pos;mat;start;end;rr;ir;xpix;pixs;top;left;center;right;bottom;tl;tr;br;bl;nrange;n;bmat;m;bit;tie;size;data;bmname;gbits2;gbits;newcp;res;zero;irfactor;numcalc;outline;mousemsg;LowHi;posXs;posYs;half;colsrows;pixsh;n1;ys;xs;symmetrical;CalcMid;pixsq;sbo;xx;yy;gridspace;ind;calcs;st;ix;ind1;calcs1;calcs2;list;last;ij;spacing;where;flag;py;a;b;grid;cmap;czero;bailout;zoom;secs;bo;ls;gt;maxit;loopagain;f;sec;highbailout;∆;col;Ys;Xs;cYs;point25
+⍝ Mandelbrot for Dyalog
+⍝ f←{⍺+⍵*2}
+⍝ c(f⍣67)c
 ⍝ Mandelbrot is semetercial around the real axis
 ⍝ Due to "landscape orientation of PocketPC´s screen,
 ⍝ Image drawn rotated thru 90 degrees
  ⎕IO←0
- n←7                                    ⍝ optimal value for Strongarm and Pentium  , XSCALE 32 (value depends on algorithm used)
- ⍝ 296 240 screen: 320=↑↓ real Y;  240←→ imagenary X;
- ur←{⊃⌽⍵}
- numcalc←0                              ⍝ Count number of pixels calculated
- pixsq←296 240                          ⍝ 1/4 of the number of pixels
- pixsh←pixsq+pixsq                      ⍝ 1/2 of the number of pixels
- pixs←pixsh+pixsh                       ⍝ number of pixels
- cp←100 100                             ⍝ Not the Center Point
- newcp←¯0.5 0                           ⍝ New (starting) Center Point of screen in complex plane
- irfactor←0.75                          ⍝ Ratio of number of pixels in each dimension
- range←4×1,irfactor                     ⍝ "Range" of the complex plane shown on screen
- zoom←1
+ secs←{0 60 60⊥3↑3↓⍵}                      ⍝ second from time stamp
+ cmap←BuildCMap                            ⍝ build a colour map
+ bailout←67                                ⍝ initial bail-out: max number of iriterations
+ numcalc←0                                 ⍝ Count number of pixels calculated
+ pixsq←296 240                             ⍝ 1/4 of the number of pixels
+ pixsh←pixsq+pixsq                         ⍝ 1/2 of the number of pixels
+ pixs←pixsh+pixsh                          ⍝ number of pixels
+ newcp←¯0.5 0                              ⍝ New (starting) Center Point of screen in complex plane
+ irfactor←0.75                             ⍝ Ratio of number of pixels in each dimension
+ range←4×1,irfactor                        ⍝ "Range" of the complex plane shown on screen
+ zoom←1                                    ⍝ Current zoom factor
  ⍝ Build a list the real and imaginary values of each pixel in complex plane
  posYs posXs←pixs BuildPos¨newcp{⍺+¯1 1×⍵÷2}¨range
- ⍝ Its slightly faster dividing screen into 4 quarters
- ymax xmax←pixsh                        ⍝ Max number of pixels of quarter screen
- ixmax←⍳xmax
- iymax←⍳ymax
- ⍝ Final result matrix will have "colour" values for each pixel.
- ⍝ ¯2=pixel not calculated
- ⍝ ¯1="Black hole" Pixel colour not resolved after max number of iterations
- ⍝ ¯3 and ¯4 used to prefill screen edge pixels
- lastmat←pixs⍴¯2                        ⍝ Used to store previsous image during zoom
- ⍝ This program only calculates pixels on "boundries".
- ⍝ A pixel must be on a boundry if it is next to a pixel of a different colour.
- ⍝ Set up some artifical boundries to force calculations around edge of screen.
- lastmat[⍳⊃pixs;0,¯1+⊃⌽pixs]←((⊃pixs),2)⍴¯3 ¯3 ¯4 ¯4
- lastmat[0,¯1+⊃pixs;⍳⊃⌽pixs]←(2,(⊃⌽pixs))⍴¯3 ¯4
- bailout←67                             ⍝ bail-out: max number of iriterations
- cmap←BuildCMap                         ⍝ build a colour map
- ⍝ Pre-calculate point on grid to reduce longest boundary paths
- ⍝ Optimal grid size varies by hardware    (Time reduced from 60 to 10 by this!)
-
- start←0 60 60⊥3↑3↓⎕TS                  ⍝ Start Timer
- :While start≡0 60 60⊥3↑3↓⎕TS
- :EndWhile
- start←0 60 60⊥3↑3↓⎕TS
- n DrawGrid pixs
-
-⍝ Start of loop for each "Zoom" view
- 'bmout'⎕WC'Bitmap'('Bits'(Normalise lastmat))('CMap'cmap)
- list←'form'('Mandelbrot')('Size'(bmout.Size))
- list,←('Picture'('bmout' 3))('Coord' 'pixel')
- 'f'⎕WC list
- 'f.mb'⎕WC'MenuBar'
- 'f.mb.exit'⎕WC'MenuItem' 'Exit'('Event' 30 1)
- f.onMouseDown←1
- 'f'⎕WS'Visible' 1                      ⍝ display
- :While newcp≢cp                        ⍝ Loop for each new center point
-     cp←newcp                           ⍝ Set the Cente Point to the new CP
-     middle←xmax⊃posXs                  ⍝ Where in Imaginay dimension is the middle pixel
-
-     xx←(⍳2×ymax),¨1
-     lastmat[xx]←bailout ManCalcColor(posYs[⊃¨xx])(posXs[ur¨xx])
-
-     :For n :In ⍳4                      ⍝ Loop for each of the 4 areas     Tl,Tr,Bl,Br
-         :Select n                      ⍝ Select area
-         :Case 0                        ⍝ Top left
-             y←⍳2+ymax                  ⍝ Two extra rows to overlap with bottom
-             x←⍳1+xmax                  ⍝ One extra col to overlap with right
-             symmetrical←0
-         :Case 1                        ⍝ Top Right
-             symmetrical←middle=0       ⍝ This is symmetrical with Top Left if middle is zero
-             y←⍳2+ymax                  ⍝ Two extra rows to overlap with bottom
-             x←{⍵+⍳⍵}xmax               ⍝ No over-lap with left
-         :Case 2                        ⍝ bottom left
-             y←{¯1+⍵+⍳⍵+1}ymax          ⍝ No overlap with top
-             x←⍳1+xmax                  ⍝ One extra col to overlap with right
-             symmetrical←0
-         :Case 3                        ⍝ Bottom Right
-             symmetrical←middle=0       ⍝ This is symmetrical with Top Left if middle is zero
-             y←{¯1+⍵+⍳⍵+1}ymax          ⍝ No overlap with top
-             x←{⍵+⍳⍵}xmax               ⍝ No over-lap with left
-         :Else                          ⍝ Try changing the For loop to ":For n :In 0"
-             ⍝ This will calculate the screen "All in one go"
-             y←⍳⊃pixs                   ⍝ All the pixels Top to Bottom
-             x←⍳⊃⌽pixs                  ⍝ All the pixels Left to Right
-             symmetrical←0              ⍝ ignore any symmetry
-         :EndSelect
-         :If symmetrical                ⍝ Do we need to calculate this section?
-             ⍝ use earlier symmetrical result
-             mat←0 ¯1↓⌽mat              ⍝ Dont repeat left/right overlap
-         :Else
-             cmat←lastmat[y;x]          ⍝ get edge values and any "earlier results"
-             drawn←(cmat>1)∨cmat<¯2     ⍝ Flag which pixels have already been calculated
-             mat←lastmat bt cmat drawn(posXs[x])(posYs[y]) ⍝ Trace all the boundries in the area
-         :End
-         lastmat[y;x]←mat               ⍝ Save the new results back
+ outline←BuildOutline pixs                 ⍝ Used to store previsous image during zoom
+ f←ShowGrid outline cmap'0'(⍕newcp)'1'(⍕bailout)  ⍝ display  grid
+ start←StartTimer ⎕TS
+ loopagain←1
+ :While loopagain                          ⍝ Loop for each new center point
+     loopagain←0
+     col←(⍳pixs[0]),¨0                      ⍝ Left edge
+     Ys←posYs[⊃¨col]
+     Xs←posXs[⊃∘⌽¨col]
+     outline[col]←bailout ManCalcColor Ys Xs
+     :If 0∊posXs                           ⍝ check if "real" line within image
+         ∆←bailout⌈50+⌈/,outline           ⍝ a higher bailout because centrline contains meny black pixels
+         zero←⍸posXs=0
+         point25←⍸posYs=0.25
+         xx←(⍳pixs[0]),¨zero           ⍝ center line
+         Ys←posYs[⊃¨xx]
+         bo←(¯2>Ys)∨Ys>0.25
+         Xs←bo/pixs[0]⍴0
+         cYs←bo/Ys
+         outline[bo/xx]←∆ ManCalcColor cYs Xs
+         outline[point25;zero]←1
      :End
 
-     {}'bmout'⎕WC'Bitmap'('Bits'(Normalise lastmat))('CMap'(cmap))
+   ⍝ The Mandelbrot set is symetrical about the real axis
+   ⍝ so only parts in one half need ever be calculated
+     y←⍳⊃pixs                              ⍝ All the pixels Top to Bottom
+     x←⍳⊃⌽pixs                             ⍝ All the pixels Left to Right
+     ls←+/posXs[x]<0                       ⍝ number of pixels in -ve imaginary half
+     gt←+/posXs[x]>0                       ⍝ number of pixels in +ve imaginary half
+     :If gt>ls                             ⍝ if more than half of the image is +ve imaginary
+         bo←posXs[x]≥0                     ⍝ boolean of +ve i
+     :Else
+         bo←posXs[x]≤0                     ⍝ boolean of -ve i
+     :End
+     'bmout'⎕WC'Bitmap'('Bits'(Normalise outline))('CMap'(cmap))  ⍝ Make into a bitmap
 
-     end←0 60 60⊥3↑3↓⎕TS
-     newmat←lastmat                     ⍝ keep a copy of the boundries
-     cmat←¯2 Flood lastmat              ⍝ Flood fill within boundries
-    ⍝ res←⎕EX'bmout'
-     'bmout'⎕WC'Bitmap'('Bits'(Normalise cmat))('CMap'(cmap)) ⍝ Make into a bitmap
-                     ⍝ Stop timing
+     x←bo/x                                ⍝ Select one side with greater numbr of pixels in it
+     cmat←outline[y;x]                     ⍝ get edge values from any "earlier results"
+     drawn←(cmat>1)∨cmat<¯2                ⍝ Flag which pixels have already been calculated
+     maxit←bailout⌈50+⌈/,cmat                       ⍝ decide on the number of iterations to use
+     outline←outline bt cmat drawn(posXs[x])(posYs[y])maxit  ⍝ Trace all the boundries in the area
+     cmat←¯2 Flood outline                 ⍝ fill all areas between boundaries
+     ⍝ Now replicate the other side
+     :If gt>ls
+         outline←(1 ¯1×pixs)↑(⌽outline),outline
+         cmat←(1 ¯1×pixs)↑(⌽cmat),cmat
+     :Else
+         outline←pixs↑outline,⌽outline
+         cmat←pixs↑cmat,⌽cmat
+     :End
+     res←⎕EX'bmout'
+     end←secs ⎕TS                          ⍝ end time
+     sec←⍕end-start
+     'bmout'⎕WC'Bitmap'('Bits'(Normalise cmat))('CMap'(cmap))  ⍝ Make into a bitmap
+     f ⎕WS('Caption'('text'))
      Cycle&cmap
-     f.Caption←((⍕end-start),' secs  Center=',⍕cp)
-     mousemsg←⎕DQ'f'
-     numcalc←0                          ⍝ Reset counter
-     :If ''≢mousemsg                    ⍝ Hit the big "X" get a '' in mousemsg
-     :AndIf 'MouseDown'≡1⊃mousemsg
-         zoom+←1
-         range÷←2                       ⍝ Half range
-         newcp←posYs[⊃y],posXs[⊃x]      ⍝ Set New Centerpoint
-         lastmat←mousemsg ReMap newmat  ⍝ Copy Zoomed outline
-         'bmout'⎕WC'Bitmap'('Bits'(Normalise cmat))('CMap'(cmap)) ⍝ Make into a bitmap
-     :End
-     start←0 60 60⊥3↑3↓⎕TS              ⍝ Start Timer
+    ⍝ 'f.Caption'⎕WS sec,' secs  Center=',newcp,'  Zoom=',zoom,' Maxint=',maxit
+     f ⎕WS('Caption'(sec,' secs  Center=',(⍕newcp),'  Zoom=',(⍕zoom),' Maxint=',⍕maxit))
 
- :EndWhile                              ⍝ Loop until no more changes requested
+     mousemsg←⎕DQ'f'
+     numcalc←0                             ⍝ Reset counter
+     :If ''≢mousemsg                       ⍝ Hit the big "X" get a '' in mousemsg
+     :AndIf 'MouseDown'≡1⊃mousemsg
+         loopagain←1
+         zoom×←2
+         range÷←2                          ⍝ Half range
+         outline newcp posXs posYs←mousemsg NextMat outline posXs posYs pixs pixsh pixsq  ⍝ Copy Zoomed outline
+         res←⎕EX'bmout'
+       ⍝  'bmout'⎕WC'Bitmap'('Bits'(Normalise cmat))('CMap'(cmap))  ⍝ Make into a bitmap
+       ⍝  cmap ShowGrid outline
+     :End
+     start←StartTimer ⎕TS                  ⍝ Start Timer
+
+ :EndWhile                                 ⍝ Loop until no more changes requested
  res←⎕EX'bmout'

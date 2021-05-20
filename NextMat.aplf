@@ -1,0 +1,18 @@
+ (outline newcp nposXs nposYs)←mouse NextMat(mat posXs posYs pixs pixsh pixsq);y;x;sy;sx;sx2;yx2;bigmat;yx;y2;x2;xs;ys;dx;dy;topx;quartermat;exp;expvec;bias;lefty
+ ⍝ Return expanded matrix position of center pixel, positions in complex plane of grid lines
+ ⍝ mouse←→result returned by a mouse down event
+ ⍝ mat←current matrix
+ ⍝ posXs←→real value of pixels
+ ⍝ posYs←→imaginary values of pixels
+ y←mouse[2]                                                 ⍝ y-position of mouse
+ x←mouse[3]                                                 ⍝ x-position of mouse
+ x←480{⍵∊⍺+¯2 ¯1 0 1 2:⍺ ⋄ ⍵}x
+ ⍝ calculate top left corner of new matrix
+ lefty topx←WithInBounds x y pixsq pixsh
+ ⍝ Calculate new complex values for each pixel
+ nposYs nposXs←NewComplex posYs posXs pixs pixsh lefty topx
+ ⍝ calculate new center point
+ newcp←nposYs[pixsq[0]+lefty],nposXs[pixsh[1]+topx]
+ ⍝ copy the quarter of mat centered at new center point
+ quartermat←mat[lefty+⍳pixsh[0];topx+⍳pixsh[1]]
+ outline←pixs Expand quartermat
