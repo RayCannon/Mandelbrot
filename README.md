@@ -11,9 +11,6 @@ The code tries only to calculate the pixels that lie next to boundaries within t
 
 Pixels which do not lie adjacent to boundary can then be "flood filled" with the same value as the pixel adjacent to the boundary. 
 
-Currently, the algorithm used to Flood Fill the space (in the "black hole" areas) sometimes fails, and a coloured horizontal line is produced.
-I am working still working on fixing this bug.
-
 The Bitmap is created using CMap and CBits. The animation is produced by rotating the values in CMap in a cycle.
 
 The auto start ⌷LX should be set to run the function "lx".
